@@ -1,22 +1,44 @@
 window.onload = function () {
 
-  var http = new XMLHttpRequest();
 
-  http.onreadystatechange = function () {
-    if(http.readyState == 4 && http.status == 200)
-    {
-      //console.log(JSON.parse(http.response));
-    }
+  function errorHandler(jqXHR, textStatus, error) {
+    console.log(error);
   }
 
-  http.open("GET", "data/tweets.json", true);
-  http.send();
-
-  $.get("data/tweets.json",function(data)
-  {
+  function cbTweets(data){
     console.log(data);
-  });
-  
-  console.log("test");
+
+    $.ajax({
+      type: "GET",
+      url: "data/tweets.json",
+      success: cbFriends,
+      error: errorHandler
+    });
+  }
+
+  function cbFriends(data){
+    console.log(data);
+
+    $.ajax({
+      type: "GET",
+      url: "data/friends.json",
+      success: cbVideos,
+      error: errorHandler
+    });
+  }
+
+  function cbVideos(data){
+    console.log(data);
+
+    $.ajax({
+      type: "GET",
+      url: "data/videos.json",
+      success: function() {
+          console.log(data);
+      },
+        error: errorHandler
+    });
+  }
+
 
 }
